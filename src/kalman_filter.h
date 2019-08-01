@@ -63,6 +63,9 @@ class KalmanFilter {
 
   // measurement covariance matrix
   Eigen::MatrixXd R_;
+  
+  float pi = 3.14159265358979323846;
+  
 };
 
 #endif // KALMAN_FILTER_H_
