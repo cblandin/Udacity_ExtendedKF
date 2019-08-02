@@ -102,11 +102,8 @@ void FusionEKF::ProcessMeasurement(const MeasurementPackage &measurement_pack) {
     is_initialized_ = true;
     return;
   }
+ 
   
-  //Check for dividing by zero
-  if ((measurement_pack.sensor_type_ == MeasurementPackage::RADAR)  && (fabs(ekf_.x_(0)*ekf_.x_(0) + ekf_.x_(1)*ekf_.x_(1)) < 0.1)){
-    return; // skip radar and wait for lidar
-  }
 
   /**
    * Prediction
@@ -147,6 +144,11 @@ void FusionEKF::ProcessMeasurement(const MeasurementPackage &measurement_pack) {
    */
 
   if (measurement_pack.sensor_type_ == MeasurementPackage::RADAR) {
+    
+    //Check for dividing by zero
+    if (fabs(ekf_.x_(0)*ekf_.x_(0) + ekf_.x_(1)*ekf_.x_(1)) < .01){
+      return; // skip thisw radar measurement
+    }
     // TODO: Radar updates
     ekf_.H_ =  tools.CalculateJacobian(ekf_.x_);
     

@@ -20,10 +20,10 @@ VectorXd Tools::CalculateRMSE(const vector<VectorXd> &estimations,
   assert(estimations.size() > 0);
   assert(estimations.size() == ground_truth.size());
   
-  
+  VectorXd c;
   // accumulate squared residuals
   for (int i=0; i < estimations.size(); ++i) {
-    VectorXd c = estimations[i] - ground_truth[i];
+    c = estimations[i] - ground_truth[i];
     rmse = rmse + VectorXd(c.array()*c.array());
   }
 
