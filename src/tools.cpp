@@ -46,7 +46,7 @@ MatrixXd Tools::CalculateJacobian(const VectorXd& x_state) {
 
 
   // check division by zero
-  if ((px < 0.00001) && (py < 0.00001)){
+  if ((px*px + py*py) < 0.00001){
       std::cout << "Divide By Zero" << std::endl;
       
   }

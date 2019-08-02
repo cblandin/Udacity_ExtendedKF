@@ -146,7 +146,8 @@ void FusionEKF::ProcessMeasurement(const MeasurementPackage &measurement_pack) {
   if (measurement_pack.sensor_type_ == MeasurementPackage::RADAR) {
     
     //Check for dividing by zero
-    if (fabs(ekf_.x_(0)*ekf_.x_(0) + ekf_.x_(1)*ekf_.x_(1)) < .01){
+    if (fabs(ekf_.x_(0)*ekf_.x_(0) + ekf_.x_(1)*ekf_.x_(1)) < 0.0001){
+      cout << "Skipped Radar Measurement" << endl;
       return; // skip thisw radar measurement
     }
     // TODO: Radar updates
@@ -155,7 +156,7 @@ void FusionEKF::ProcessMeasurement(const MeasurementPackage &measurement_pack) {
     ekf_.R_ = R_radar_;
     
     VectorXd rad_meas = VectorXd(3);
-    rad_meas << measurement_pack.raw_measurements_[0], measurement_pack.raw_measurements_[1], measurement_pack.raw_measurements_[2];
+    rad_meas << measurement_pack.raw_measurements_(0), measurement_pack.raw_measurements_(1), measurement_pack.raw_measurements_(2);
     
 	ekf_.UpdateEKF(rad_meas);
   } 
@@ -164,7 +165,7 @@ void FusionEKF::ProcessMeasurement(const MeasurementPackage &measurement_pack) {
     ekf_.H_ = H_laser_;
     ekf_.R_ = R_laser_;
     VectorXd laser_meas = VectorXd(2);
-    laser_meas << measurement_pack.raw_measurements_[0], measurement_pack.raw_measurements_[1];
+    laser_meas << measurement_pack.raw_measurements_(0), measurement_pack.raw_measurements_(1);
     ekf_.Update(laser_meas);
 
   }
